@@ -45,3 +45,43 @@ xetra_tickers()
 10 VERBUND AG       INH. A   AT00007464… OEWA   XETR  XWBO        XETB          EUR      CS              Xetra 
 # … with 3,063 more rows
 ```
+
+### Nasdaq and NYSE tickers
+
+```r
+nasdaq_tickers()
+
+# A tibble: 3,735 x 10
+   symbol name                   last  change volume   market_cap country   industry         sector    ipo_year
+   <chr>  <chr>                 <dbl>   <dbl> <chr>         <dbl> <chr>     <chr>            <chr>        <int>
+ 1 AACG   "ATA Creativity Glo…   5.72  0.1    1610099     1.79e 8 China     Other Consumer … Consumer…       NA
+ 2 AACQ   "Artius Acquisition…  11.3   0.01   1427755     1.02e 9 United S… Business Servic… Finance       2020
+ 3 AACQU  "Artius Acquisition…  12.1   0.16   134919      0.      United S… Business Servic… Finance       2020
+ 4 AACQW  "Artius Acquisition…   2.5  -0.0416 300867      0.      United S… Business Servic… Finance       2020
+ 5 AAL    "American Airlines …  17.3   0.28   274118…     1.07e10 United S… Air Freight/Del… Transpor…       NA
+ 6 AAME   "Atlantic American …   5.71  0.45   2251125     1.17e 8 United S… Life Insurance   Finance         NA
+ 7 AAOI   "Applied Optoelectr…  12.2  -0.11   455336      2.81e 8 United S… Semiconductors   Technolo…     2013
+ 8 AAON   "AAON Inc. Common S…  79.2  -0.15   126212      4.14e 9 United S… Industrial Mach… Capital …       NA
+ 9 AAPL   "Apple Inc. Common … 135.    0.24   600273…     2.35e12 United S… Computer Manufa… Technolo…     1980
+10 AAWW   "Atlas Air Worldwid…  56.1   1.82   920836      1.54e 9 United S… Transportation … Transpor…       NA
+# … with 3,725 more rows
+```
+
+```r
+nyse_tickers()
+
+# A tibble: 3,037 x 10
+   symbol name                        last change volume  market_cap country  industry        sector   ipo_year
+   <chr>  <chr>                      <dbl>  <dbl> <chr>        <dbl> <chr>    <chr>           <chr>       <int>
+ 1 A      "Agilent Technologies In… 128.     1.02 1277628    3.91e10 "United… "Biotechnology… "Capita…     1999
+ 2 AA     "Alcoa Corporation Commo…  21.7    0.27 3304816    4.03e 9 ""       "Aluminum"      "Basic …     2016
+ 3 AAIC   "Arlington Asset Investm…   3.89   0.17 243716     1.30e 8 "United… "Real Estate I… "Consum…       NA
+ 4 AAIC^B "Arlington Asset Investm…  22.4    0.15 500       NA       "United… ""              ""             NA
+ 5 AAIC^C "Arlington Asset Investm…  22.4   -0.07 2395      NA       "United… ""              ""             NA
+ 6 AAN    "Aarons Holdings Company…  20.0    0.03 250189     6.75e 8 "United… "Diversified C… "Techno…     2020
+ 7 AAP    "Advance Auto Parts Inc … 153.    -1.65 846631     1.04e10 "United… "Other Special… "Consum…       NA
+ 8 AAT    "American Assets Trust I…  30.1   -0.22 414638     1.82e 9 "United… "Real Estate I… "Consum…     2011
+ 9 AB     "AllianceBernstein Holdi…  37.7   -1.04 596647     3.62e 9 "United… "Investment Ma… "Financ…       NA
+10 ABB    "ABB Ltd Common Stock"     29.5    0.26 1050056    6.00e10 "Switze… "Electrical Pr… "Consum…       NA
+# … with 3,027 more rows
+```

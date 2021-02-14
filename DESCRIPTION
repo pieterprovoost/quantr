@@ -16,4 +16,6 @@ Imports:
   dplyr,
   httr,
   lubridate,
-  tibble
+  tibble,
+  jsonlite,
+  readr
