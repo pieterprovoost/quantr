@@ -9,10 +9,7 @@
 #' @export
 #' @examples
 #' euronext_tickers("XBRU")
-euronext_tickers <- function(mics) {
-  if (missing(mics)) {
-    mics <- c("ALXB", "ALXL", "ALXP", "XPAR", "XAMS", "XBRU", "XLIS", "XMLI", "MLXB", "ENXB", "ENXL", "TNLA", "TNLB", "XLDN", "XESM", "XMSM", "XATL", "VPXB", "XOSL", "XOAS", "MERK")
-  }
+euronext_tickers <- function(mics = c("ALXB", "ALXL", "ALXP", "XPAR", "XAMS", "XBRU", "XLIS", "XMLI", "MLXB", "ENXB", "ENXL", "TNLA", "TNLB", "XLDN", "XESM", "XMSM", "XATL", "VPXB", "XOSL", "XOAS", "MERK")) {
   mics_string <- paste0(mics, collapse = ",")
   body <- list(
     "iDisplayLength" = "100",

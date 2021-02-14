@@ -2,6 +2,6 @@
 #'
 #' @docType package
 #' @name quantr
-#' @import dplyr httr lubridate tibble jsonlite readr
+#' @import dplyr lubridate tibble jsonlite readr
 #' @author Pieter Provoost, \email{pieterprovoost@gmail.com}
 NULL

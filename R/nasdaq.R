@@ -8,7 +8,7 @@
 #' @examples
 #' nasdaq_tickers()
 nasdaq_tickers <- function(exchange = "nasdaq") {
-  url <- glue("https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=25&exchange={exchange}&download=true")
+  url <- glue::glue("https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=25&exchange={exchange}&download=true")
   res <- fromJSON(url)$data$rows
   result <- res %>%
     select(

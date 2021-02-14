@@ -4,7 +4,11 @@
 \alias{euronext_tickers}
 \title{Get Euronext tickers}
 \usage{
-euronext_tickers(mics)
+euronext_tickers(
+  mics = c("ALXB", "ALXL", "ALXP", "XPAR", "XAMS", "XBRU", "XLIS", "XMLI", "MLXB",
+    "ENXB", "ENXL", "TNLA", "TNLB", "XLDN", "XESM", "XMSM", "XATL", "VPXB", "XOSL",
+    "XOAS", "MERK")
+)
 }
 \arguments{
 \item{mics}{MIC codes}

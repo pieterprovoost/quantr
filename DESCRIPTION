@@ -18,4 +18,6 @@ Imports:
   lubridate,
   tibble,
   jsonlite,
-  readr
+  readr,
+  purrr,
+  glue

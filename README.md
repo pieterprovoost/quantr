@@ -85,3 +85,41 @@ nyse_tickers()
 10 ABB    "ABB Ltd Common Stock"     29.5    0.26 1050056    6.00e10 "Switze… "Electrical Pr… "Consum…       NA
 # … with 3,027 more rows
 ```
+
+### Yahoo Finance summary data
+
+```r
+yahoo_summary(c("AAPL", "MSFT", "AMZN"))
+
+# A tibble: 3 x 131
+  priceHint previousClose  open dayLow dayHigh regularMarketPr… regularMarketOp… regularMarketDa…
+      <int>         <dbl> <dbl>  <dbl>   <dbl>            <dbl>            <dbl>            <dbl>
+1         2          135.  134.   134.    136.             135.             134.             134.
+2         2          244.  244.   243.    245.             244.             244.             243.
+3         2         3262. 3250   3233.   3280.            3262.            3250             3233.
+# … with 123 more variables: regularMarketDayHigh <dbl>, dividendRate <dbl>, dividendYield <dbl>,
+#   exDividendDate <int>, payoutRatio <dbl>, fiveYearAvgDividendYield <dbl>, beta <dbl>, trailingPE <dbl>,
+#   forwardPE <dbl>, volume <int>, regularMarketVolume <int>, averageVolume <int>, averageVolume10days <int>,
+#   averageDailyVolume10Day <int>, bid <dbl>, ask <dbl>, bidSize <int>, askSize <int>, marketCap <dbl>,
+#   fiftyTwoWeekLow <dbl>, fiftyTwoWeekHigh <dbl>, priceToSalesTrailing12Months <dbl>, fiftyDayAverage <dbl>,
+#   twoHundredDayAverage <dbl>, trailingAnnualDividendRate <dbl>, trailingAnnualDividendYield <dbl>,
+#   currency <chr>, fromCurrency <lgl>, toCurrency <lgl>, lastMarket <lgl>, algorithm <lgl>, tradeable <lgl>,
+#   enterpriseValue <dbl>, profitMargins <dbl>, floatShares <dbl>, sharesOutstanding <dbl>, sharesShort <int>,
+#   sharesShortPriorMonth <int>, sharesShortPreviousMonthDate <int>, dateShortInterest <int>,
+#   sharesPercentSharesOut <dbl>, heldPercentInsiders <dbl>, heldPercentInstitutions <dbl>, shortRatio <dbl>,
+#   shortPercentOfFloat <dbl>, category <lgl>, bookValue <dbl>, priceToBook <dbl>, fundFamily <lgl>,
+#   legalType <lgl>, lastFiscalYearEnd <int>, nextFiscalYearEnd <int>, mostRecentQuarter <int>,
+#   earningsQuarterlyGrowth <dbl>, netIncomeToCommon <dbl>, trailingEps <dbl>, forwardEps <dbl>,
+#   pegRatio <dbl>, lastSplitFactor <chr>, lastSplitDate <int>, enterpriseToRevenue <dbl>,
+#   enterpriseToEbitda <dbl>, `52WeekChange` <dbl>, SandP52WeekChange <dbl>, lastDividendValue <dbl>,
+#   lastDividendDate <int>, exchange <chr>, quoteType <chr>, symbol <chr>, underlyingSymbol <chr>,
+#   shortName <chr>, longName <chr>, firstTradeDateEpochUtc <int>, timeZoneFullName <chr>,
+#   timeZoneShortName <chr>, uuid <chr>, messageBoardId <chr>, gmtOffSetMilliseconds <int>,
+#   preMarketSource <chr>, postMarketChangePercent <dbl>, postMarketChange <dbl>, postMarketTime <int>,
+#   postMarketPrice <dbl>, postMarketSource <chr>, regularMarketChangePercent <dbl>,
+#   regularMarketChange <dbl>, regularMarketTime <int>, regularMarketPrice <dbl>,
+#   averageDailyVolume3Month <int>, regularMarketSource <chr>, exchangeName <chr>,
+#   exchangeDataDelayedBy <int>, marketState <chr>, quoteSourceName <chr>, currencySymbol <chr>,
+#   currentPrice <dbl>, targetHighPrice <dbl>, targetLowPrice <dbl>, targetMeanPrice <dbl>,
+#   targetMedianPrice <dbl>, …
+```
