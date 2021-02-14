@@ -123,3 +123,38 @@ yahoo_summary(c("AAPL", "MSFT", "AMZN"))
 #   currentPrice <dbl>, targetHighPrice <dbl>, targetLowPrice <dbl>, targetMeanPrice <dbl>,
 #   targetMedianPrice <dbl>, …
 ```
+
+### Yahoo Finance financials (income statement, balance sheet, cash flow)
+
+```r
+yahoo_financials(c("AAPL", "MSFT"))
+
+# A tibble: 8 x 62
+  endDate             netIncome depreciation changeToNetinco… changeToAccount… changeToLiabili…
+  <dttm>                  <dbl>        <dbl>            <dbl>            <dbl>            <dbl>
+1 2020-09-26 02:00:00   5.74e10  11056000000       6517000000       6917000000      -1981000000
+2 2019-09-28 02:00:00   5.53e10  12547000000       5076000000        245000000      -2548000000
+3 2018-09-29 02:00:00   5.95e10  10903000000     -27694000000      -5322000000       9172000000
+4 2017-09-30 02:00:00   4.84e10  10157000000      10640000000      -2093000000       8373000000
+5 2020-06-30 02:00:00   4.43e10  12300000000       5577000000      -2577000000       5230000000
+6 2019-06-30 02:00:00   3.92e10  11600000000      -2521000000      -2812000000       4694000000
+7 2018-06-30 02:00:00   1.66e10   9900000000      -3054000000      -3862000000       7070000000
+8 2017-06-30 02:00:00   2.55e10   7800000000       1342000000      -1216000000       3901000000
+# … with 56 more variables: changeToInventory <dbl>, changeToOperatingActivities <dbl>,
+#   totalCashFromOperatingActivities <dbl>, capitalExpenditures <dbl>, investments <dbl>,
+#   otherCashflowsFromInvestingActivities <int>, totalCashflowsFromInvestingActivities <dbl>,
+#   dividendsPaid <dbl>, netBorrowings <dbl>, otherCashflowsFromFinancingActivities <dbl>,
+#   totalCashFromFinancingActivities <dbl>, changeInCash <dbl>, repurchaseOfStock <dbl>,
+#   issuanceOfStock <int>, cash <dbl>, shortTermInvestments <dbl>, netReceivables <dbl>, inventory <dbl>,
+#   otherCurrentAssets <dbl>, totalCurrentAssets <dbl>, longTermInvestments <dbl>,
+#   propertyPlantEquipment <dbl>, otherAssets <dbl>, totalAssets <dbl>, accountsPayable <dbl>,
+#   shortLongTermDebt <dbl>, otherCurrentLiab <dbl>, longTermDebt <dbl>, otherLiab <dbl>,
+#   totalCurrentLiabilities <dbl>, totalLiab <dbl>, commonStock <dbl>, retainedEarnings <dbl>,
+#   treasuryStock <dbl>, otherStockholderEquity <dbl>, totalStockholderEquity <dbl>, netTangibleAssets <dbl>,
+#   totalRevenue <dbl>, costOfRevenue <dbl>, grossProfit <dbl>, researchDevelopment <dbl>,
+#   sellingGeneralAdministrative <dbl>, totalOperatingExpenses <dbl>, operatingIncome <dbl>,
+#   totalOtherIncomeExpenseNet <dbl>, ebit <dbl>, interestExpense <dbl>, incomeBeforeTax <dbl>,
+#   incomeTaxExpense <dbl>, netIncomeFromContinuingOps <dbl>, netIncomeApplicableToCommonShares <dbl>,
+#   symbol <chr>, effectOfExchangeRate <int>, goodWill <dbl>, intangibleAssets <dbl>,
+#   deferredLongTermAssetCharges <dbl>
+```
