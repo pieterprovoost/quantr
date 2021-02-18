@@ -161,7 +161,7 @@ yahoo_financials(c("AAPL", "MSFT"))
 
 ### Yahoo Finance historical prices
 
-```{r}
+```r
 yahoo_history("MSFT", "1wk", 60)
 
 # A tibble: 10 x 7
