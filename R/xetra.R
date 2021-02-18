@@ -8,9 +8,7 @@
 #' xetra_tickers()
 xetra_tickers <- function() {
   url <- "https://www.xetra.com/resource/blob/1528/fd276b284c2590e4645b8be8e1e5e601/data/t7-xetr-allTradableInstruments.csv"
-  res <- httr::GET(url)
-  text <- rawToChar(httr::content(res, "raw"))
-  df <- read.csv(text = text, sep = ";", skip = 2)
+  df <- read.csv(url, sep = ";", skip = 2)
   result <- df %>%
     select(
       name = Instrument,

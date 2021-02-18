@@ -1,13 +1,14 @@
 Package: quantr
 Title: Fetch financials and stock market data.
-Version: 0.0.1
+Version: 0.1.0
+Date: 2021-02-18
 Authors@R: 
     person(given = "Pieter",
            family = "Provoost",
            role = c("aut", "cre"),
            email = "pieterprovoost@gmail.com")
 Description: R package for fetching financials and stock market data.
-License: `use_mit_license()`
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

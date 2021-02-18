@@ -56,8 +56,25 @@ yahoo_financials_simple <- function(symbol, reporting) {
 #' @return tibble
 #' @export
 #' @examples
-#' yahoo_financials(c("AAPL", "MSFT"))
+#' yahoo_financials(c("AAPL", "MSFT"), "quarterly")
 yahoo_financials <- function(symbols, reporting = "annual") {
   rows <- purrr::map(.x = symbols, .f = ~yahoo_financials_simple(.x, reporting))
   return(bind_rows(rows))
+}
+
+#' Get historical prices from Yahoo Finance.
+#'
+#' @param interval interval ("1d", "1wk", or "1mo")
+#' @param days how many days to go back
+#' @return tibble
+#' @export
+yahoo_history <- function(symbol, interval = "1d", days = 30) {
+  period1 <- as.integer(Sys.time() - as.difftime(days, unit = "days"))
+  period2 <- as.integer(Sys.time())
+  url <- glue::glue("https://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1={period1}&period2={period2}&interval={interval}&events=history")
+  read.csv(url) %>%
+    select(date = Date, open = Open, high = High, low = Low, close = Close, adjusted_close = Adj.Close, volume = Volume) %>%
+    mutate(symbol = symbol) %>%
+    mutate(date = parse_date_time2(date, "Ymd")) %>%
+    as_tibble()
 }

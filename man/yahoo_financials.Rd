@@ -18,5 +18,5 @@ tibble
 Get Yahoo Finance financials (income statement, balance sheet, cash flow)
 }
 \examples{
-yahoo_financials(c("AAPL", "MSFT"))
+yahoo_financials(c("AAPL", "MSFT"), "quarterly")
 }

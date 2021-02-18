@@ -158,3 +158,23 @@ yahoo_financials(c("AAPL", "MSFT"))
 #   symbol <chr>, effectOfExchangeRate <int>, goodWill <dbl>, intangibleAssets <dbl>,
 #   deferredLongTermAssetCharges <dbl>
 ```
+
+### Yahoo Finance historical prices
+
+```{r}
+yahoo_history("MSFT", "1wk", 60)
+
+# A tibble: 10 x 7
+   date        open  high   low close adjusted_close    volume
+   <chr>      <dbl> <dbl> <dbl> <dbl>          <dbl>     <int>
+ 1 2020-12-21  218.  226.  217.  223.           222.  89044300
+ 2 2020-12-28  224.  227.  220.  222.           222.  76551100
+ 3 2021-01-04  223.  223   212.  220.           219. 147534500
+ 4 2021-01-11  218.  219.  212.  213.           212. 127610700
+ 5 2021-01-18  214.  230.  213.  226.           225. 129180500
+ 6 2021-01-25  229.  243.  224.  232.           231. 243772400
+ 7 2021-02-01  235.  245.  232.  242.           242. 129728600
+ 8 2021-02-08  243.  246.  241.  245.           244. 100257800
+ 9 2021-02-15  245.  246.  241.  244.           244.  48361700
+10 2021-02-18  242.  244.  241.  244.           244.  16310640
+```
