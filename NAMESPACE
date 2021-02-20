@@ -3,6 +3,7 @@
 export(euronext_tickers)
 export(nasdaq_tickers)
 export(nyse_tickers)
+export(plot_yahoo_financials)
 export(xetra_tickers)
 export(yahoo_financials)
 export(yahoo_history)

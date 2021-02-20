@@ -178,3 +178,12 @@ yahoo_history("MSFT", "1wk", 60)
  9 2021-02-15  245.  246.  241.  244.           244.  48361700
 10 2021-02-18  242.  244.  241.  244.           244.  16310640
 ```
+
+### Plot key financials
+
+```r
+yahoo_financials(c("TSLA", "NIO")) %>%
+   plot_yahoo_financials()
+```
+
+![financials](man/figures/financials.png)

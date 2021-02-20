@@ -80,3 +80,21 @@ yahoo_history <- function(symbol, interval = "1d", days = 30) {
     mutate(date = parse_date_time2(date, "Ymd")) %>%
     as_tibble()
 }
+
+#' Plot key financials from Yahoo Finance.
+#'
+#' @param financials output from yahoo_financials()
+#' @return plot
+#' @export
+plot_yahoo_financials <- function(financials) {
+  f <- financials %>%
+    select(symbol, endDate, totalRevenue, netIncome, freeCashflow) %>%
+    mutate(endDate = factor(as.Date(endDate), levels = as.character(as.Date(unique(endDate))))) %>%
+    tidyr::gather(metric, value, 3:5) %>%
+    mutate(metric = factor(metric, levels = c("totalRevenue", "netIncome", "freeCashflow")))
+  ggplot(data = f) +
+    geom_bar(aes(x = endDate, y = value, fill = metric), stat = "identity", position = "dodge") +
+    scale_fill_manual(values = wesanderson::wes_palette("GrandBudapest1", n = 3)) +
+    scale_y_continuous(labels = scales::unit_format(unit = "M", scale = 1e-6)) +
+    facet_wrap(~symbol, ncol = 1, scales = "free")
+}
