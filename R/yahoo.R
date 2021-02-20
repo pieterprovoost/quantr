@@ -32,8 +32,8 @@ yahoo_summary <- function(symbols, modules = c("defaultKeyStatistics", "financia
 yahoo_financials_simple <- function(symbol, reporting) {
   modules <- ifelse(
     reporting == "annual",
-    "balanceSheetHistory,cashflowStatementHistory,incomeStatementHistory",
-    "balanceSheetHistoryQuarterly,cashflowStatementHistoryQuarterly,incomeStatementHistoryQuarterly"
+    "incomeStatementHistory,balanceSheetHistory,cashflowStatementHistory",
+    "incomeStatementHistoryQuarterly,balanceSheetHistoryQuarterly,cashflowStatementHistoryQuarterly"
   )
   url <- glue::glue("https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}?modules={modules}")
   res <- fromJSON(url)$quoteSummary$result
@@ -45,6 +45,8 @@ yahoo_financials_simple <- function(symbol, reporting) {
     select(-contains(".fmt"), -contains(".longFmt")) %>%
     mutate(endDate.raw = as.POSIXct(endDate.raw, origin = "1970-01-01"))
   colnames(df) <- gsub(".raw", "", colnames(df))
+  df <- df %>%
+    mutate(freeCashflow_ = totalCashFromOperatingActivities + capitalExpenditures)
   df$symbol <- symbol
   return(as_tibble(df))
 }
