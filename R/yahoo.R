@@ -46,7 +46,7 @@ yahoo_financials_simple <- function(symbol, reporting) {
     mutate(endDate.raw = as.POSIXct(endDate.raw, origin = "1970-01-01"))
   colnames(df) <- gsub(".raw", "", colnames(df))
   df <- df %>%
-    mutate(freeCashflow_ = totalCashFromOperatingActivities + capitalExpenditures)
+    mutate(freeCashflow = totalCashFromOperatingActivities + capitalExpenditures)
   df$symbol <- symbol
   return(as_tibble(df))
 }
