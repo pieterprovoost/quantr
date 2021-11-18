@@ -64,7 +64,7 @@ yahoo_financials <- function(symbols, reporting = "annual") {
   return(bind_rows(rows))
 }
 
-#' Get historical prices from Yahoo Finance.
+#' Get historical prices from Yahoo Finance
 #'
 #' @param interval interval ("1d", "1wk", or "1mo")
 #' @param days how many days to go back
@@ -81,7 +81,7 @@ yahoo_history <- function(symbol, interval = "1d", days = 30) {
     as_tibble()
 }
 
-#' Plot key financials from Yahoo Finance.
+#' Plot key financials from Yahoo Finance
 #'
 #' @param financials output from yahoo_financials()
 #' @return plot

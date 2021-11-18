@@ -2,7 +2,7 @@
 % Please edit documentation in R/yahoo.R
 \name{plot_yahoo_financials}
 \alias{plot_yahoo_financials}
-\title{Plot key financials from Yahoo Finance.}
+\title{Plot key financials from Yahoo Finance}
 \usage{
 plot_yahoo_financials(financials)
 }
@@ -13,5 +13,5 @@ plot_yahoo_financials(financials)
 plot
 }
 \description{
-Plot key financials from Yahoo Finance.
+Plot key financials from Yahoo Finance
 }

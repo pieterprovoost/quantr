@@ -2,7 +2,7 @@
 % Please edit documentation in R/yahoo.R
 \name{yahoo_history}
 \alias{yahoo_history}
-\title{Get historical prices from Yahoo Finance.}
+\title{Get historical prices from Yahoo Finance}
 \usage{
 yahoo_history(symbol, interval = "1d", days = 30)
 }
@@ -15,5 +15,5 @@ yahoo_history(symbol, interval = "1d", days = 30)
 tibble
 }
 \description{
-Get historical prices from Yahoo Finance.
+Get historical prices from Yahoo Finance
 }

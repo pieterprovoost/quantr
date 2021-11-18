@@ -2,7 +2,15 @@
 
 R package for fetching financials and stock market data.
 
+## Installation
+
+```r
+devtools::install_github("pieterprovoost/quantr")
+```
+
 ## Usage
+
+See full documentation at [https://pieterprovoost.github.io/quantr/](https://pieterprovoost.github.io/quantr/).
 
 ### Euronext tickers
 
