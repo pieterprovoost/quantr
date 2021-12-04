@@ -2,6 +2,6 @@
 #'
 #' @docType package
 #' @name quantr
-#' @import dplyr lubridate tibble jsonlite readr ggplot2
+#' @import dplyr lubridate tibble jsonlite readr ggplot2 rvest
 #' @author Pieter Provoost, \email{pieterprovoost@gmail.com}
 NULL

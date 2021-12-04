@@ -7,7 +7,7 @@
 xetra_tickers()
 }
 \value{
-data frame
+tibble
 }
 \description{
 This gets all Xetra ticker symbols from the Xetra website.

@@ -94,6 +94,27 @@ nyse_tickers()
 # … with 3,027 more rows
 ```
 
+### FTSE 350 tickers
+
+```r
+ftse_350_tickers()
+
+# A tibble: 350 × 2
+   name                     symbol
+   <chr>                    <chr> 
+ 1 3i                       III   
+ 2 Abrdn                    ABDN  
+ 3 Admiral Group            ADM   
+ 4 Anglo American plc       AAL   
+ 5 Antofagasta              ANTO  
+ 6 Ashtead Group            AHT   
+ 7 Associated British Foods ABF   
+ 8 AstraZeneca              AZN   
+ 9 Auto Trader Group        AUTO  
+10 Avast                    AVST  
+# … with 340 more rows
+```
+
 ### Yahoo Finance summary data
 
 ```r

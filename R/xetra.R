@@ -2,7 +2,7 @@
 #'
 #' This gets all Xetra ticker symbols from the Xetra website.
 #'
-#' @return data frame
+#' @return tibble
 #' @export
 #' @examples
 #' xetra_tickers()
