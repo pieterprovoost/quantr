@@ -11,7 +11,6 @@ yahoo_search(q)
 }
 \value{
 tibble
-export
 }
 \description{
 Search Yahoo Finance for tickers

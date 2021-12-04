@@ -85,7 +85,7 @@ yahoo_history <- function(symbol, interval = "1d", days = 30) {
 #'
 #' @param q search query (for example, ISIN, ticker symbol)
 #' @return tibble
-#' export
+#' @export
 yahoo_search <- function(q) {
   url <- glue::glue("https://query2.finance.yahoo.com/v1/finance/search?q={q}&newsCount=0")
   fromJSON(url)$quotes %>%
