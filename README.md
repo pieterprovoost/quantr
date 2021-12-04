@@ -205,7 +205,7 @@ yahoo_search("COLR")
 ```
 
 ```r
-> yahoo_search("BE0974256852")
+yahoo_search("BE0974256852")
 
 # A tibble: 1 × 10
   exchange shortname quoteType symbol  index  score typeDisp longname            exchDisp        isYahooFinance
