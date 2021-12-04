@@ -2,7 +2,7 @@
 #'
 #' This gets all Nasdaq ticker symbols from the Nasdaq website.
 #'
-#' @param exchange exchange ("nasdaq" or "nyse")
+#' @param exchange exchange ("nasdaq", "nyse", or "amex")
 #' @return data frame
 #' @export
 #' @examples
