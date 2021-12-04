@@ -81,6 +81,17 @@ yahoo_history <- function(symbol, interval = "1d", days = 30) {
     as_tibble()
 }
 
+#' Search Yahoo Finance for tickers
+#'
+#' @param q search query (for example, ISIN, ticker symbol)
+#' @return tibble
+#' export
+yahoo_search <- function(q) {
+  url <- glue::glue("https://query2.finance.yahoo.com/v1/finance/search?q={q}&newsCount=0")
+  fromJSON(url)$quotes %>%
+    as_tibble()
+}
+
 #' Plot key financials from Yahoo Finance
 #'
 #' @param financials output from yahoo_financials()

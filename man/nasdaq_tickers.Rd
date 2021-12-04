@@ -7,7 +7,7 @@
 nasdaq_tickers(exchange = "nasdaq")
 }
 \arguments{
-\item{exchange}{exchange ("nasdaq" or "nyse")}
+\item{exchange}{exchange ("nasdaq", "nyse", or "amex")}
 }
 \value{
 data frame

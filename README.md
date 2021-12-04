@@ -186,3 +186,28 @@ yahoo_history("MSFT", "1wk", 60)
  9 2021-02-15  245.  246.  241.  244.           244.  48361700
 10 2021-02-18  242.  244.  241.  244.           244.  16310640
 ```
+
+### Search Yahoo Finance
+
+```r
+yahoo_search("COLR")
+
+# A tibble: 7 × 10
+  exchange shortname         quoteType symbol  index score typeDisp longname    exchDisp         isYahooFinance
+  <chr>    <chr>             <chr>     <chr>   <chr> <dbl> <chr>    <chr>       <chr>            <lgl>
+1 BRU      COLRUYT           EQUITY    COLR.BR quot… 20426 Equity   Etn. Fr. C… Brussels Stock … TRUE 
+2 BER      COLRUYT           EQUITY    EFC1.BE quot… 20028 Equity   NA          Berlin           TRUE 
+3 VIE      COLRUYT           EQUITY    COLR.VI quot… 20002 Equity   Etn. Fr. C… Vienna           TRUE 
+4 PNK      COLRUYT SA UNSP … EQUITY    CUYTY   quot… 20002 Equity   Etn. Fr. C… OTC Markets      TRUE 
+5 STU      tablissements Fr… EQUITY    EFC1.SG quot… 20001 Equity   NA          Stuttgart        TRUE 
+6 DUS      COLRUYT           EQUITY    EFC1.DU quot… 20001 Equity   NA          Dusseldorf Stoc… TRUE 
+7 IOB      ETABLISSEMENTEN … EQUITY    0N4Y.IL quot… 20001 Equity   Etn. Fr. C… International O… TRUE 
+```
+
+```r
+> yahoo_search("BE0974256852")
+
+# A tibble: 1 × 10
+  exchange shortname quoteType symbol  index  score typeDisp longname            exchDisp        isYahooFinance
+  <chr>    <chr>     <chr>     <chr>   <chr>  <dbl> <chr>    <chr>               <chr>           <lgl>        1 BRU      COLRUYT   EQUITY    COLR.BR quotes 20426 Equity   Etn. Fr. Colruyt NV Brussels Stock… TRUE 
+```
