@@ -83,6 +83,16 @@ yahoo_history <- function(symbol, interval = "1d", days = 30, end_date = Sys.tim
     as_tibble()
 }
 
+#' Get price for a specific date
+#'
+#' @param symbol symbol
+#' @param date date
+#' @export
+yahoo_price_for_date <- function(symbol, date) {
+  prices <- yahoo_history(symbol, interval = "1d", days = 5, end_date = date)
+  return(tail(prices, 1))
+}
+
 #' Search Yahoo Finance for tickers
 #'
 #' @param q search query (for example, ISIN, ticker symbol)

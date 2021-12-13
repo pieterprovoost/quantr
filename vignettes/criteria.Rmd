@@ -129,6 +129,10 @@ ggplot(fin_web) +
 
 This gives us an annual growth rate of __`r round(coef(mod)[["fin_web$endDate"]] / mean(fin_web$dilutedAverageShares) * as.numeric(days(365)), 2)`__.
 
+## Long term liabilities / 5 year free cash flow < 5
+
+To do.
+
 ## Free cash flow growth
 
 ```{r message=FALSE, warning=FALSE}
@@ -157,4 +161,11 @@ ggplot() +
 
 This gives us a mean price to free cash flow of __`r round(mean(pfcf), 2)`__.
 
+## Bringing it all together
 
+```{r message=FALSE, warning=FALSE}
+bind_rows(
+  eight_pillars("BBY"),
+  eight_pillars("MSFT")
+)
+```
