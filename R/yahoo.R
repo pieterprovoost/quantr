@@ -68,11 +68,12 @@ yahoo_financials <- function(symbols, reporting = "annual") {
 #'
 #' @param interval interval ("1d", "1wk", or "1mo")
 #' @param days how many days to go back
+#' @param end_date end date (default = Sys.time())
 #' @return tibble
 #' @export
-yahoo_history <- function(symbol, interval = "1d", days = 30) {
-  period1 <- as.integer(Sys.time() - as.difftime(days, unit = "days"))
-  period2 <- as.integer(Sys.time())
+yahoo_history <- function(symbol, interval = "1d", days = 30, end_date = Sys.time()) {
+  period1 <- as.integer(end_date - as.difftime(days, unit = "days"))
+  period2 <- as.integer(end_date)
   url <- glue::glue("https://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1={period1}&period2={period2}&interval={interval}&events=history")
   read.csv(url) %>%
     select(date = Date, open = Open, high = High, low = Low, close = Close, adjusted_close = Adj.Close, volume = Volume) %>%
@@ -108,4 +109,33 @@ plot_yahoo_financials <- function(financials) {
     scale_fill_manual(values = wesanderson::wes_palette("GrandBudapest1", n = 3)) +
     scale_y_continuous(labels = scales::unit_format(unit = "M", scale = 1e-6)) +
     facet_wrap(~symbol, ncol = 1, scales = "free")
+}
+
+extract_fin_row <- function(html, metric) {
+  html %>% html_elements(xpath = glue::glue("//*[@title = '{metric}']/../..//*[@*='fin-col']")) %>% html_text() %>% gsub(",", "", .) %>% as.numeric()
+}
+
+#' Get Yahoo Finance financials from web page
+#'
+#' @param symbol ticker symbol
+#' @return tibble
+#' @export
+yahoo_financials_web <- function(symbol) {
+  html <- read_html(glue::glue("https://finance.yahoo.com/quote/{symbol}/financials"))
+  headers <- html %>% html_element(xpath = "//*[text() = 'ttm']/../..") %>% html_children() %>% html_text()
+  stopifnot(headers[1] == "Breakdown")
+  thousands <- html %>% html_element(xpath = "//*[text() = 'All numbers in thousands']") %>% class() == "xml_node"
+  suppressWarnings({
+    basic_eps <- extract_fin_row(html, "Basic EPS")
+    diluted_eps <- extract_fin_row(html, "Diluted EPS")
+    basic_average_shares <- extract_fin_row(html, "Basic Average Shares") * 10^(thousands * 3)
+    diluted_average_shares <- extract_fin_row(html, "Diluted Average Shares") * 10^(thousands * 3)
+  })
+  return(tibble(
+    endDate = lubridate::parse_date_time(headers[-(1:2)], "%m%d%y"),
+    basicEps = basic_eps[-1],
+    dilutedEps = diluted_eps[-1],
+    basicAverageShares = basic_average_shares[-1],
+    dilutedAverageShares = diluted_average_shares[-1]
+  ))
 }

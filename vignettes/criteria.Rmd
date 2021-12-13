@@ -1,0 +1,160 @@
+---
+title: "Stock screening using eight criteria"
+description: >
+  Stock screening using eight criteria
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Stock screening using eight criteria}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(quantr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+```
+
+The goal of this notebook is to demonstrate stock screening using the following eight criteria:
+
+1. PE ratio < 22
+2. Return on invested capital > 9%
+3. Revenue growth
+4. Net income growth
+5. Shares outstanding decreasing or even
+6. Long term liabilities / 5 year free cash flow < 5
+7. Free cash flow growth
+8. Price to free cash flow < 20
+
+Let's do this for Best Buy, ticker `BBY`.
+
+```{r message=FALSE, warning=FALSE}
+ticker <- "BBY"
+
+fin <- yahoo_financials(ticker)
+fin_web <- yahoo_financials_web(ticker)
+fin_web
+```
+
+## PE ratio < 22
+
+For the PE ratio, use the EPS from `yahoo_financials_web()` and get the price for each of the dates:
+
+```{r message=FALSE, warning=FALSE}
+price <- fin$endDate %>%
+  purrr::map(~yahoo_history(ticker, interval = "1d", days = 1, end_date = .)) %>%
+  bind_rows()
+
+price
+```
+
+```{r message=FALSE, warning=FALSE}
+pe_ratio <- price$open / fin_web$dilutedEps
+
+ggplot() +
+  geom_bar(aes(x = fin$endDate, y = pe_ratio), stat = "identity", fill = "#33658A", width = as.numeric(days(100))) +
+  xlab("date") + ylab("PE ratio")
+```
+
+This gives us a mean PE ratio of __`r round(mean(pe_ratio), 2)`__.
+
+## Return on invested capital > 9%
+
+Return on invested capital will be calculated here as cash flow divided by equity + debt. Needs to be checked `r emo::ji("warning")`.
+
+```{r message=FALSE, warning=FALSE}
+roic <- fin$freeCashflow / (fin$longTermDebt + fin$totalStockholderEquity)
+
+ggplot() +
+  geom_bar(aes(x = fin$endDate, y = roic), stat = "identity", fill = "#33658A", width = as.numeric(days(100))) +
+  xlab("date") + ylab("ROIC")
+```
+
+This gives us a mean ROIC of __`r round(mean(roic), 2)`__.
+
+## Revenue growth
+
+Revenue should be going up, so let's try a linear regression model.
+
+```{r message=FALSE, warning=FALSE}
+mod <- lm(fin$totalRevenue ~ fin$endDate)
+summary(mod)
+```
+
+```{r message=FALSE, warning=FALSE}
+ggplot(fin) + 
+  geom_point(aes(x = endDate, y = totalRevenue)) + 
+  geom_abline(slope = coef(mod)[["fin$endDate"]], intercept = coef(mod)[["(Intercept)"]]) +
+  scale_y_continuous(expand = c(0.1, 0), limits = c(0, NA))
+```
+
+This gives us an annual growth rate of __`r round(coef(mod)[["fin$endDate"]] / mean(fin$totalRevenue) * as.numeric(days(365)), 2)`__.
+
+## Net income growth
+
+Same procedure as before:
+
+```{r message=FALSE, warning=FALSE}
+mod <- lm(fin$netIncome ~ fin$endDate)
+summary(mod)
+```
+
+```{r message=FALSE, warning=FALSE}
+ggplot(fin) + 
+  geom_point(aes(x = endDate, y = netIncome)) + 
+  geom_abline(slope = coef(mod)[["fin$endDate"]], intercept = coef(mod)[["(Intercept)"]]) +
+  scale_y_continuous(expand = c(0.1, 0), limits = c(0, NA))
+```
+
+This gives us an annual growth rate of __`r round(coef(mod)[["fin$endDate"]] / mean(fin$netIncome) * as.numeric(days(365)), 2)`__.
+
+## Shares outstanding
+
+Shares outstanding should be decreasing or staying the same.
+
+```{r message=FALSE, warning=FALSE}
+mod <- lm(fin_web$dilutedAverageShares ~ fin_web$endDate)
+summary(mod)
+```
+
+```{r message=FALSE, warning=FALSE}
+ggplot(fin_web) + 
+  geom_point(aes(x = endDate, y = dilutedAverageShares)) + 
+  geom_abline(slope = coef(mod)[["fin_web$endDate"]], intercept = coef(mod)[["(Intercept)"]]) +
+  scale_y_continuous(expand = c(0.1, 0), limits = c(0, NA))
+```
+
+This gives us an annual growth rate of __`r round(coef(mod)[["fin_web$endDate"]] / mean(fin_web$dilutedAverageShares) * as.numeric(days(365)), 2)`__.
+
+## Free cash flow growth
+
+```{r message=FALSE, warning=FALSE}
+mod <- lm(fin$freeCashflow ~ fin$endDate)
+summary(mod)
+```
+
+```{r message=FALSE, warning=FALSE}
+ggplot(fin) + 
+  geom_point(aes(x = endDate, y = freeCashflow)) + 
+  geom_abline(slope = coef(mod)[["fin$endDate"]], intercept = coef(mod)[["(Intercept)"]]) +
+  scale_y_continuous(expand = c(0.1, 0), limits = c(0, NA))
+```
+
+This gives us an annual growth rate of __`r round(coef(mod)[["fin$endDate"]] / mean(fin$freeCashflow) * as.numeric(days(365)), 2)`__.
+
+## Price to free cash flow < 20
+
+```{r message=FALSE, warning=FALSE}
+pfcf <- price$open / (fin$freeCashflow / fin_web$dilutedAverageShares)
+
+ggplot() +
+  geom_bar(aes(x = fin$endDate, y = pfcf), stat = "identity", fill = "#33658A", width = as.numeric(days(100))) +
+  xlab("date") + ylab("price to free cash flow")
+```
+
+This gives us a mean price to free cash flow of __`r round(mean(pfcf), 2)`__.
+
+

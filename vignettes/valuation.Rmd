@@ -128,7 +128,3 @@ The calculated net present value is __`r summ$currencySymbol``r round(npv, 2)`__
 ## Growth and profitability scenarios
 
 To do.
-
-## Screening
-
-To do.

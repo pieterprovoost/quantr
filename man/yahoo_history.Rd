@@ -4,12 +4,14 @@
 \alias{yahoo_history}
 \title{Get historical prices from Yahoo Finance}
 \usage{
-yahoo_history(symbol, interval = "1d", days = 30)
+yahoo_history(symbol, interval = "1d", days = 30, end_date = Sys.time())
 }
 \arguments{
 \item{interval}{interval ("1d", "1wk", or "1mo")}
 
 \item{days}{how many days to go back}
+
+\item{end_date}{end date (default = Sys.time())}
 }
 \value{
 tibble

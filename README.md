@@ -188,6 +188,20 @@ yahoo_financials(c("AAPL", "MSFT"))
 #   deferredLongTermAssetCharges <dbl>
 ```
 
+### Yahoo Finance financials from web (EPS, outstanding shares)
+
+```r
+yahoo_financials_web("BBY")
+
+# A tibble: 4 × 5
+  endDate             basicEps dilutedEps basicAverageShares dilutedAverageShares
+  <dttm>                 <dbl>      <dbl>              <dbl>                <dbl>
+1 2021-01-31 00:00:00     6.93       6.84             259600               263000
+2 2020-01-31 00:00:00     5.82       5.75             264900               268100
+3 2019-01-31 00:00:00     5.3        5.2              276400               281400
+4 2018-01-31 00:00:00     3.33       3.26             300400               307100
+```
+
 ### Yahoo Finance historical prices
 
 ```r

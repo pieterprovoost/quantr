@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quantr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -94,6 +94,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/criteria.html">Stock screening using eight criteria</a>
+    </li>
     <li>
       <a href="../articles/valuation.html">Stock valuation using discounted cash flow (DCF)</a>
     </li>
@@ -131,7 +134,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>exchange</th>
-      <td><p>exchange ("nasdaq" or "nyse")</p></td>
+      <td><p>exchange ("nasdaq", "nyse", or "amex")</p></td>
     </tr>
     </table>
 
@@ -141,20 +144,20 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='fu'>nasdaq_tickers</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 4,682 × 10</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    symbol name        last  change volume   market_cap country industry   sector</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> AACG   ATA Crea…   1.95 -<span style='color: #BB0000;'>0.102</span>  17101       6.11<span style='color: #949494;'>e</span> 7 China   <span style='color: #949494;'>"</span>Service … <span style='color: #949494;'>"</span>Misc…</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> AACI   Armada A…   9.78 -<span style='color: #BB0000;'>0.005</span>  5148        2.03<span style='color: #949494;'>e</span> 8 United… <span style='color: #949494;'>""</span>         <span style='color: #949494;'>""</span>    </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> AACIU  Armada A…   9.92  0      20          0   <span style='color: #949494;'> </span>   United… <span style='color: #949494;'>""</span>         <span style='color: #949494;'>""</span>    </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> AACIW  Armada A…   0.52 -<span style='color: #BB0000;'>0.000</span><span style='color: #BB0000; text-decoration: underline;'>1</span> 150         0   <span style='color: #949494;'> </span>   United… <span style='color: #949494;'>""</span>         <span style='color: #949494;'>""</span>    </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> AADI   Aadi Bio…  24.9  -<span style='color: #BB0000;'>0.58</span>   12932       5.20<span style='color: #949494;'>e</span> 8 United… <span style='color: #949494;'>"</span>Biotechn… <span style='color: #949494;'>"</span>Heal…</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> AAL    American…  19.3  -<span style='color: #BB0000;'>0.595</span>  106920…     1.25<span style='color: #949494;'>e</span>10 United… <span style='color: #949494;'>"</span>Air Frei… <span style='color: #949494;'>"</span>Tran…</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> AAME   Atlantic…   4.11 -<span style='color: #BB0000;'>0.112</span>  3827        8.37<span style='color: #949494;'>e</span> 7 United… <span style='color: #949494;'>"</span>Life Ins… <span style='color: #949494;'>"</span>Fina…</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> AAOI   Applied …   5.98 -<span style='color: #BB0000;'>0.025</span>  184193      1.63<span style='color: #949494;'>e</span> 8 United… <span style='color: #949494;'>"</span>Semicond… <span style='color: #949494;'>"</span>Tech…</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> AAON   AAON Inc…  76.6   0.3    29854       4.02<span style='color: #949494;'>e</span> 9 United… <span style='color: #949494;'>"</span>Industri… <span style='color: #949494;'>"</span>Capi…</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> AAPL   Apple In… 154.    0.840  324423…     2.68<span style='color: #949494;'>e</span>12 United… <span style='color: #949494;'>"</span>Computer… <span style='color: #949494;'>"</span>Tech…</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 4,672 more rows, and 1 more variable: ipo_year &lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 4,794 × 10</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    symbol name    last change volume market_cap country industry sector ipo_year</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> AACG   ATA …   1.45 -<span style='color: #BB0000;'>0.12</span>  22017     4.55<span style='color: #949494;'>e</span> 7 China   <span style='color: #949494;'>"</span>Servic… <span style='color: #949494;'>"</span>Misc…       <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> AACI   Arma…   9.75 -<span style='color: #BB0000;'>0.01</span>  257       2.02<span style='color: #949494;'>e</span> 8 United… <span style='color: #949494;'>""</span>       <span style='color: #949494;'>""</span>         <span style='text-decoration: underline;'>2</span>021</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> AACIW  Arma…   0.47 -<span style='color: #BB0000;'>0.031</span> 26200     0   <span style='color: #949494;'> </span>   United… <span style='color: #949494;'>""</span>       <span style='color: #949494;'>""</span>         <span style='text-decoration: underline;'>2</span>021</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> AADI   Aadi…  23.9   1.32  141969    5.00<span style='color: #949494;'>e</span> 8 United… <span style='color: #949494;'>"</span>Biotec… <span style='color: #949494;'>"</span>Heal…       <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> AAL    Amer…  17.1  -<span style='color: #BB0000;'>0.915</span> 29989…    1.11<span style='color: #949494;'>e</span>10 United… <span style='color: #949494;'>"</span>Air Fr… <span style='color: #949494;'>"</span>Tran…       <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> AAME   Atla…   3.76  0.04  2807      7.66<span style='color: #949494;'>e</span> 7 United… <span style='color: #949494;'>"</span>Life I… <span style='color: #949494;'>"</span>Fina…       <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> AAOI   Appl…   5.72 -<span style='color: #BB0000;'>0.06</span>  218574    1.56<span style='color: #949494;'>e</span> 8 United… <span style='color: #949494;'>"</span>Semico… <span style='color: #949494;'>"</span>Tech…     <span style='text-decoration: underline;'>2</span>013</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> AAON   AAON…  80.8   0.57  59140     4.23<span style='color: #949494;'>e</span> 9 United… <span style='color: #949494;'>"</span>Indust… <span style='color: #949494;'>"</span>Capi…       <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> AAPL   Appl… 178.   -<span style='color: #BB0000;'>1.27</span>  10566…    3.09<span style='color: #949494;'>e</span>12 United… <span style='color: #949494;'>"</span>Comput… <span style='color: #949494;'>"</span>Tech…     <span style='text-decoration: underline;'>1</span>980</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> AATC   Auto…   6.56 -<span style='color: #BB0000;'>0.130</span> 16983     3.52<span style='color: #949494;'>e</span> 7 United… <span style='color: #949494;'>"</span>Indust… <span style='color: #949494;'>"</span>Capi…       <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 4,784 more rows</span></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
