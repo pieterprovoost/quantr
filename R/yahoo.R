@@ -78,6 +78,7 @@ yahoo_history <- function(symbol, interval = "1d", days = 30, end_date = Sys.tim
   read.csv(url) %>%
     select(date = Date, open = Open, high = High, low = Low, close = Close, adjusted_close = Adj.Close, volume = Volume) %>%
     mutate(symbol = symbol) %>%
+    mutate_at(c("open", "close", "high", "low", "adjusted_close", "volume"), as.numeric) %>%
     mutate(date = parse_date_time2(date, "Ymd")) %>%
     as_tibble()
 }
