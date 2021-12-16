@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quantr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
 </ol>
 <p>Let’s do this for Best Buy, ticker <code>BBY</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ticker</span> <span class="op">&lt;-</span> <span class="st">"BBY"</span>
+<code class="sourceCode R"><span class="va">ticker</span> <span class="op">&lt;-</span> <span class="st">"WBA"</span>
 
 <span class="va">fin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/yahoo_financials.html">yahoo_financials</a></span><span class="op">(</span><span class="va">ticker</span><span class="op">)</span>
 <span class="va">fin_web</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/yahoo_financials_web.html">yahoo_financials_web</a></span><span class="op">(</span><span class="va">ticker</span><span class="op">)</span>
@@ -107,54 +107,51 @@
 <pre><code>## # A tibble: 4 × 5
 ##   endDate             basicEps dilutedEps basicAverageShares dilutedAverageShar…
 ##   &lt;dttm&gt;                 &lt;dbl&gt;      &lt;dbl&gt;              &lt;dbl&gt;               &lt;dbl&gt;
-## 1 2021-01-31 00:00:00     6.93       6.84          259600000           263000000
-## 2 2020-01-31 00:00:00     5.82       5.75          264900000           268100000
-## 3 2019-01-31 00:00:00     5.3        5.2           276400000           281400000
-## 4 2018-01-31 00:00:00     3.33       3.26          300400000           307100000</code></pre>
+## 1 2021-08-31 00:00:00    NA         NA                    NA                  NA
+## 2 2020-08-31 00:00:00     0.52       0.52          879400000           880300000
+## 3 2019-08-31 00:00:00     4.32       4.31          921500000           923500000
+## 4 2018-08-31 00:00:00     5.07       5.05          991000000           995000000</code></pre>
 <div id="pe-ratio-22" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pe-ratio-22" class="anchor"></a>PE ratio &lt; 22</h2>
-<p>For the PE ratio, use the EPS from <code><a href="../reference/yahoo_financials_web.html">yahoo_financials_web()</a></code> and get the price for each of the dates:</p>
+<p>For the trailing PE ratio, use current price and the EPS history from <code><a href="../reference/yahoo_financials_web.html">yahoo_financials_web()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">price</span> <span class="op">&lt;-</span> <span class="va">fin</span><span class="op">$</span><span class="va">endDate</span> <span class="op">%&gt;%</span>
-  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="../reference/yahoo_history.html">yahoo_history</a></span><span class="op">(</span><span class="va">ticker</span>, interval <span class="op">=</span> <span class="st">"1d"</span>, days <span class="op">=</span> <span class="fl">1</span>, end_date <span class="op">=</span> <span class="va">.</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">bind_rows</span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">price</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/yahoo_history.html">yahoo_history</a></span><span class="op">(</span><span class="va">ticker</span>, interval <span class="op">=</span> <span class="st">"1d"</span>, days <span class="op">=</span> <span class="fl">1</span>, end_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 
 <span class="va">price</span></code></pre></div>
-<pre><code>## # A tibble: 4 × 8
+<pre><code>## # A tibble: 1 × 8
 ##   date                 open  high   low close adjusted_close  volume symbol
 ##   &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; 
-## 1 2021-01-29 00:00:00 112.  112.  108.  109.           106.  2481444 BBY   
-## 2 2020-01-31 00:00:00  86.7  87.0  84.5  84.7           80.4 2841993 BBY   
-## 3 2019-02-01 00:00:00  59.2  59.2  57.8  58.5           54.0 3784812 BBY   
-## 4 2018-02-02 00:00:00  72.6  73.0  71.0  71.2           64.1 5040360 BBY</code></pre>
+## 1 2021-12-16 00:00:00  48.5  49.9  48.5  49.6           49.6 1629754 WBA</code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pe_ratio</span> <span class="op">&lt;-</span> <span class="va">price</span><span class="op">$</span><span class="va">open</span> <span class="op">/</span> <span class="va">fin_web</span><span class="op">$</span><span class="va">dilutedEps</span>
-
-<span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_bar</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">fin</span><span class="op">$</span><span class="va">endDate</span>, y <span class="op">=</span> <span class="va">pe_ratio</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"identity"</span>, fill <span class="op">=</span> <span class="st">"#33658A"</span>, width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu">days</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">xlab</span><span class="op">(</span><span class="st">"date"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ylab</span><span class="op">(</span><span class="st">"PE ratio"</span><span class="op">)</span></code></pre></div>
-<p><img src="criteria_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<p>This gives us a mean PE ratio of <strong>16.28</strong>.</p>
+<code class="sourceCode R"><span class="va">pe_ratio</span> <span class="op">&lt;-</span> <span class="va">price</span><span class="op">$</span><span class="va">open</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">fin_web</span><span class="op">$</span><span class="va">dilutedEps</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>This gives us a mean PE ratio of <strong>14.73</strong>.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_bar</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">fin</span><span class="op">$</span><span class="va">endDate</span>, y <span class="op">=</span> <span class="va">fin_web</span><span class="op">$</span><span class="va">dilutedEps</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"identity"</span>, fill <span class="op">=</span> <span class="st">"#33658A"</span>, width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu">days</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">xlab</span><span class="op">(</span><span class="st">"date"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ylab</span><span class="op">(</span><span class="st">"Earnings per share"</span><span class="op">)</span></code></pre></div>
+<p><img src="criteria_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div id="return-on-invested-capital-9" class="section level2">
 <h2 class="hasAnchor">
 <a href="#return-on-invested-capital-9" class="anchor"></a>Return on invested capital &gt; 9%</h2>
 <p>Return on invested capital will be calculated here as cash flow divided by equity + debt. Needs to be checked ⚠️.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">roic</span> <span class="op">&lt;-</span> <span class="va">fin</span><span class="op">$</span><span class="va">freeCashflow</span> <span class="op">/</span> <span class="op">(</span><span class="va">fin</span><span class="op">$</span><span class="va">longTermDebt</span> <span class="op">+</span> <span class="va">fin</span><span class="op">$</span><span class="va">totalStockholderEquity</span><span class="op">)</span>
 
 <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_bar</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">fin</span><span class="op">$</span><span class="va">endDate</span>, y <span class="op">=</span> <span class="va">roic</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"identity"</span>, fill <span class="op">=</span> <span class="st">"#33658A"</span>, width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu">days</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">xlab</span><span class="op">(</span><span class="st">"date"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ylab</span><span class="op">(</span><span class="st">"ROIC"</span><span class="op">)</span></code></pre></div>
-<p><img src="criteria_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<p>This gives us a mean ROIC of <strong>0.45</strong>.</p>
+<p><img src="criteria_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p>This gives us a mean ROIC of <strong>0.14</strong>.</p>
 </div>
 <div id="revenue-growth" class="section level2">
 <h2 class="hasAnchor">
 <a href="#revenue-growth" class="anchor"></a>Revenue growth</h2>
 <p>Revenue should be going up, so let’s try a linear regression model.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">fin</span><span class="op">$</span><span class="va">totalRevenue</span> <span class="op">~</span> <span class="va">fin</span><span class="op">$</span><span class="va">endDate</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -163,31 +160,29 @@
 ## 
 ## Residuals:
 ##          1          2          3          4 
-##  8.657e+08 -1.149e+09 -2.989e+08  5.823e+08 
+##  5.260e+09 -4.785e+09 -6.210e+09  5.735e+09 
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept) -3.608e+10  2.488e+10  -1.451   0.2840  
-## fin$endDate  5.117e+01  1.589e+01   3.220   0.0844 .
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##              Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) 1.023e+11  1.752e+11   0.584    0.618
+## fin$endDate 1.529e+01  1.106e+02   0.138    0.903
 ## 
-## Residual standard error: 1.118e+09 on 2 degrees of freedom
-## Multiple R-squared:  0.8383, Adjusted R-squared:  0.7574 
-## F-statistic: 10.37 on 1 and 2 DF,  p-value: 0.08444</code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+## Residual standard error: 7.811e+09 on 2 degrees of freedom
+## Multiple R-squared:  0.009456,   Adjusted R-squared:  -0.4858 
+## F-statistic: 0.01909 on 1 and 2 DF,  p-value: 0.9028</code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">fin</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">endDate</span>, y <span class="op">=</span> <span class="va">totalRevenue</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_abline</span><span class="op">(</span>slope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">[[</span><span class="st">"fin$endDate"</span><span class="op">]</span><span class="op">]</span>, intercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">[[</span><span class="st">"(Intercept)"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_y_continuous</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="criteria_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
-<p>This gives us an annual growth rate of <strong>0.04</strong>.</p>
+<p><img src="criteria_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p>This gives us an annual growth rate of <strong>0</strong>.</p>
 </div>
 <div id="net-income-growth" class="section level2">
 <h2 class="hasAnchor">
 <a href="#net-income-growth" class="anchor"></a>Net income growth</h2>
 <p>Same procedure as before:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">fin</span><span class="op">$</span><span class="va">netIncome</span> <span class="op">~</span> <span class="va">fin</span><span class="op">$</span><span class="va">endDate</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -195,32 +190,30 @@
 ## lm(formula = fin$netIncome ~ fin$endDate)
 ## 
 ## Residuals:
-##         1         2         3         4 
-## -23400000 -33300000 136800000 -80100000 
+##          1          2          3          4 
+##  1.187e+09 -1.995e+09  4.313e+08  3.768e+08 
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept) -1.084e+10  2.576e+09  -4.210   0.0521 .
-## fin$endDate  7.857e+00  1.646e+00   4.774   0.0412 *
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##               Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)  5.804e+10  3.793e+10   1.530    0.266
+## fin$endDate -3.477e+01  2.395e+01  -1.452    0.284
 ## 
-## Residual standard error: 115700000 on 2 degrees of freedom
-## Multiple R-squared:  0.9193, Adjusted R-squared:  0.879 
-## F-statistic: 22.79 on 1 and 2 DF,  p-value: 0.04118</code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+## Residual standard error: 1.691e+09 on 2 degrees of freedom
+## Multiple R-squared:  0.513,  Adjusted R-squared:  0.2695 
+## F-statistic: 2.107 on 1 and 2 DF,  p-value: 0.2838</code></pre>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">fin</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">endDate</span>, y <span class="op">=</span> <span class="va">netIncome</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_abline</span><span class="op">(</span>slope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">[[</span><span class="st">"fin$endDate"</span><span class="op">]</span><span class="op">]</span>, intercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">[[</span><span class="st">"(Intercept)"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_y_continuous</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="criteria_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
-<p>This gives us an annual growth rate of <strong>0.17</strong>.</p>
+<p><img src="criteria_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p>This gives us an annual growth rate of <strong>-0.37</strong>.</p>
 </div>
 <div id="shares-outstanding" class="section level2">
 <h2 class="hasAnchor">
 <a href="#shares-outstanding" class="anchor"></a>Shares outstanding</h2>
 <p>Shares outstanding should be decreasing or staying the same.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">fin_web</span><span class="op">$</span><span class="va">dilutedAverageShares</span> <span class="op">~</span> <span class="va">fin_web</span><span class="op">$</span><span class="va">endDate</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -228,26 +221,27 @@
 ## lm(formula = fin_web$dilutedAverageShares ~ fin_web$endDate)
 ## 
 ## Residuals:
-##        1        2        3        4 
-##  4947888 -4537296 -5782629  5372037 
+##        2        3        4 
+##  4736327 -9485630  4749303 
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)      1.002e+09  1.625e+08   6.164   0.0253 *
-## fin_web$endDate -4.612e-01  1.038e-01  -4.443   0.0471 *
+## (Intercept)      3.779e+09  4.077e+08   9.268   0.0684 .
+## fin_web$endDate -1.816e+00  2.601e-01  -6.981   0.0906 .
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 7327000 on 2 degrees of freedom
-## Multiple R-squared:  0.908,  Adjusted R-squared:  0.862 
-## F-statistic: 19.74 on 1 and 2 DF,  p-value: 0.04711</code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+## Residual standard error: 11620000 on 1 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.9799, Adjusted R-squared:  0.9598 
+## F-statistic: 48.73 on 1 and 1 DF,  p-value: 0.09058</code></pre>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">fin_web</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">endDate</span>, y <span class="op">=</span> <span class="va">dilutedAverageShares</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_abline</span><span class="op">(</span>slope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">[[</span><span class="st">"fin_web$endDate"</span><span class="op">]</span><span class="op">]</span>, intercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">[[</span><span class="st">"(Intercept)"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_y_continuous</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="criteria_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
-<p>This gives us an annual growth rate of <strong>-0.05</strong>.</p>
+<p><img src="criteria_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p>This gives us an annual growth rate of <strong>NA</strong>.</p>
 </div>
 <div id="long-term-liabilities-5-year-free-cash-flow-5" class="section level2">
 <h2 class="hasAnchor">
@@ -257,7 +251,7 @@
 <div id="free-cash-flow-growth" class="section level2">
 <h2 class="hasAnchor">
 <a href="#free-cash-flow-growth" class="anchor"></a>Free cash flow growth</h2>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">fin</span><span class="op">$</span><span class="va">freeCashflow</span> <span class="op">~</span> <span class="va">fin</span><span class="op">$</span><span class="va">endDate</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -266,40 +260,40 @@
 ## 
 ## Residuals:
 ##          1          2          3          4 
-##  667100000 -873300000 -254700000  460900000 
+##  5.983e+08 -2.608e+08 -1.274e+09  9.367e+08 
 ## 
 ## Coefficients:
 ##               Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept) -4.010e+10  1.918e+10  -2.091    0.172
-## fin$endDate  2.708e+01  1.225e+01   2.210    0.158
+## (Intercept)  4.458e+10  2.713e+10   1.643    0.242
+## fin$endDate -2.515e+01  1.714e+01  -1.468    0.280
 ## 
-## Residual standard error: 861700000 on 2 degrees of freedom
-## Multiple R-squared:  0.7095, Adjusted R-squared:  0.5642 
-## F-statistic: 4.884 on 1 and 2 DF,  p-value: 0.1577</code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+## Residual standard error: 1.21e+09 on 2 degrees of freedom
+## Multiple R-squared:  0.5185, Adjusted R-squared:  0.2778 
+## F-statistic: 2.154 on 1 and 2 DF,  p-value: 0.2799</code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">fin</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">endDate</span>, y <span class="op">=</span> <span class="va">freeCashflow</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_abline</span><span class="op">(</span>slope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">[[</span><span class="st">"fin$endDate"</span><span class="op">]</span><span class="op">]</span>, intercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">[[</span><span class="st">"(Intercept)"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_y_continuous</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="criteria_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
-<p>This gives us an annual growth rate of <strong>0.38</strong>.</p>
+<p><img src="criteria_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<p>This gives us an annual growth rate of <strong>-0.17</strong>.</p>
 </div>
 <div id="price-to-free-cash-flow-20" class="section level2">
 <h2 class="hasAnchor">
 <a href="#price-to-free-cash-flow-20" class="anchor"></a>Price to free cash flow &lt; 20</h2>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pfcf</span> <span class="op">&lt;-</span> <span class="va">price</span><span class="op">$</span><span class="va">open</span> <span class="op">/</span> <span class="op">(</span><span class="va">fin</span><span class="op">$</span><span class="va">freeCashflow</span> <span class="op">/</span> <span class="va">fin_web</span><span class="op">$</span><span class="va">dilutedAverageShares</span><span class="op">)</span>
-
-<span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_bar</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">fin</span><span class="op">$</span><span class="va">endDate</span>, y <span class="op">=</span> <span class="va">pfcf</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"identity"</span>, fill <span class="op">=</span> <span class="st">"#33658A"</span>, width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu">days</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">xlab</span><span class="op">(</span><span class="st">"date"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ylab</span><span class="op">(</span><span class="st">"price to free cash flow"</span><span class="op">)</span></code></pre></div>
-<p><img src="criteria_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
-<p>This gives us a mean price to free cash flow of <strong>11.39</strong>.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pfcf</span> <span class="op">&lt;-</span> <span class="va">price</span><span class="op">$</span><span class="va">open</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">fin</span><span class="op">$</span><span class="va">freeCashflow</span> <span class="op">/</span> <span class="va">fin_web</span><span class="op">$</span><span class="va">dilutedAverageShares</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>This gives us a price to free cash flow of <strong>9.2</strong>.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_bar</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">fin</span><span class="op">$</span><span class="va">endDate</span>, y <span class="op">=</span> <span class="va">fin</span><span class="op">$</span><span class="va">freeCashflow</span> <span class="op">/</span> <span class="va">fin_web</span><span class="op">$</span><span class="va">dilutedAverageShares</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"identity"</span>, fill <span class="op">=</span> <span class="st">"#33658A"</span>, width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu">days</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">xlab</span><span class="op">(</span><span class="st">"date"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ylab</span><span class="op">(</span><span class="st">"Free cash flow per share"</span><span class="op">)</span></code></pre></div>
+<p><img src="criteria_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 </div>
 <div id="bringing-it-all-together" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bringing-it-all-together" class="anchor"></a>Bringing it all together</h2>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">bind_rows</span><span class="op">(</span>
   <span class="fu"><a href="../reference/eight_pillars.html">eight_pillars</a></span><span class="op">(</span><span class="st">"BBY"</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/eight_pillars.html">eight_pillars</a></span><span class="op">(</span><span class="st">"MSFT"</span><span class="op">)</span>
@@ -307,8 +301,8 @@
 <pre><code>## # A tibble: 2 × 14
 ##   pe_ratio pe_ratio_ok  roic roic_ok revenue_growth revenue_growth_ok
 ##      &lt;dbl&gt; &lt;lgl&gt;       &lt;dbl&gt; &lt;lgl&gt;            &lt;dbl&gt; &lt;lgl&gt;            
-## 1     16.3 TRUE        0.449 TRUE            0.0367 TRUE             
-## 2     35.1 FALSE       0.245 TRUE            0.139  TRUE             
+## 1     19.4 TRUE        0.449 TRUE            0.0367 TRUE             
+## 2     63.9 FALSE       0.245 TRUE            0.139  TRUE             
 ## # … with 8 more variables: net_income_growth &lt;dbl&gt;, net_income_growth_ok &lt;lgl&gt;,
 ## #   shares_outstanding &lt;dbl&gt;, shares_outstanding_ok &lt;lgl&gt;, fcf_growth &lt;dbl&gt;,
 ## #   fcf_growth_ok &lt;lgl&gt;, pfcf &lt;dbl&gt;, pfcf_ok &lt;lgl&gt;</code></pre>

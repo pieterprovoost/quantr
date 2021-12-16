@@ -8,40 +8,40 @@ eight_pillars <- function(symbol) {
   fin <- yahoo_financials(symbol)
   fin_web <- yahoo_financials_web(symbol)
 
-  price <- fin$endDate %>%
-    purrr::map(~yahoo_price_for_date(symbol, .)) %>%
-    bind_rows()
+  price <- yahoo_history(symbol, interval = "1d", days = 1, end_date = Sys.time()) %>%
+    arrange(desc(date)) %>%
+    head(1)
 
   # 1
-  pe_ratio <- mean(price$open / fin_web$dilutedEps)
+  pe_ratio <- price$open / mean(fin_web$dilutedEps, na.rm = TRUE)
   pe_ratio_ok <- pe_ratio <= 22
 
   # 2
-  roic <- mean(fin$freeCashflow / (fin$longTermDebt + fin$totalStockholderEquity))
+  roic <- mean(fin$freeCashflow / (fin$longTermDebt + fin$totalStockholderEquity), na.rm = TRUE)
   roic_ok <- roic >= 0.09
 
   # 3
   mod <- lm(fin$totalRevenue ~ fin$endDate)
-  revenue_growth <- coef(mod)[["fin$endDate"]] / mean(fin$totalRevenue) * as.numeric(days(365))
+  revenue_growth <- coef(mod)[["fin$endDate"]] / mean(fin$totalRevenue, na.rm = TRUE) * as.numeric(days(365))
   revenue_growth_ok <- revenue_growth >= 0
 
   # 4
   mod <- lm(fin$netIncome ~ fin$endDate)
-  net_income_growth <- coef(mod)[["fin$endDate"]] / mean(fin$netIncome) * as.numeric(days(365))
+  net_income_growth <- coef(mod)[["fin$endDate"]] / mean(fin$netIncome, na.rm = TRUE) * as.numeric(days(365))
   net_income_growth_ok <- net_income_growth >= 0
 
   # 5
   mod <- lm(fin_web$dilutedAverageShares ~ fin_web$endDate)
-  shares_outstanding <- coef(mod)[["fin_web$endDate"]] / mean(fin_web$dilutedAverageShares) * as.numeric(days(365))
+  shares_outstanding <- coef(mod)[["fin_web$endDate"]] / mean(fin_web$dilutedAverageShares, na.rm = TRUE) * as.numeric(days(365))
   shares_outstanding_ok <- shares_outstanding <= 0
 
   # 7
   mod <- lm(fin$freeCashflow ~ fin$endDate)
-  fcf_growth <- coef(mod)[["fin$endDate"]] / mean(fin$freeCashflow) * as.numeric(days(365))
+  fcf_growth <- coef(mod)[["fin$endDate"]] / mean(fin$freeCashflow, na.rm = TRUE) * as.numeric(days(365))
   fcf_growth_ok <- fcf_growth >= 0
 
   # 8
-  pfcf <- mean(price$open / (fin$freeCashflow / fin_web$dilutedAverageShares))
+  pfcf <- price$open / mean(fin$freeCashflow / fin_web$dilutedAverageShares, na.rm = TRUE)
   pfcf_ok <- pfcf <= 20
 
   return(list(

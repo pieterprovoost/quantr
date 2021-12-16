@@ -75,12 +75,21 @@ yahoo_history <- function(symbol, interval = "1d", days = 30, end_date = Sys.tim
   period1 <- as.integer(end_date - as.difftime(days, unit = "days"))
   period2 <- as.integer(end_date)
   url <- glue::glue("https://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1={period1}&period2={period2}&interval={interval}&events=history")
-  read.csv(url) %>%
-    select(date = Date, open = Open, high = High, low = Low, close = Close, adjusted_close = Adj.Close, volume = Volume) %>%
-    mutate(symbol = symbol) %>%
-    mutate_at(c("open", "close", "high", "low", "adjusted_close", "volume"), as.numeric) %>%
-    mutate(date = parse_date_time2(date, "Ymd")) %>%
-    as_tibble()
+  tryCatch({
+    suppressWarnings({
+      csv <- read.csv(url)
+    })
+    csv %>%
+      select(date = Date, open = Open, high = High, low = Low, close = Close, adjusted_close = Adj.Close, volume = Volume) %>%
+      mutate(symbol = symbol) %>%
+      mutate_at(c("open", "close", "high", "low", "adjusted_close", "volume"), as.numeric) %>%
+      mutate(date = parse_date_time2(date, "Ymd")) %>%
+      as_tibble()
+  }, error = function(cond) {
+    message(glue("Warning: Failed to fetch price for {symbol}"))
+    message(glue("URL: {url}"))
+    return(NULL)
+  })
 }
 
 #' Get price for a specific date

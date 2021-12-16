@@ -32,7 +32,7 @@ The goal of this notebook is to demonstrate stock screening using the following 
 Let's do this for Best Buy, ticker `BBY`.
 
 ```{r message=FALSE, warning=FALSE}
-ticker <- "BBY"
+ticker <- "WBA"
 
 fin <- yahoo_financials(ticker)
 fin_web <- yahoo_financials_web(ticker)
@@ -41,25 +41,27 @@ fin_web
 
 ## PE ratio < 22
 
-For the PE ratio, use the EPS from `yahoo_financials_web()` and get the price for each of the dates:
+For the trailing PE ratio, use current price and the EPS history from `yahoo_financials_web()`:
 
 ```{r message=FALSE, warning=FALSE}
-price <- fin$endDate %>%
-  purrr::map(~yahoo_history(ticker, interval = "1d", days = 1, end_date = .)) %>%
-  bind_rows()
+price <- yahoo_history(ticker, interval = "1d", days = 1, end_date = Sys.time()) %>%
+  arrange(desc(date)) %>%
+  head(1)
 
 price
 ```
 
 ```{r message=FALSE, warning=FALSE}
-pe_ratio <- price$open / fin_web$dilutedEps
-
-ggplot() +
-  geom_bar(aes(x = fin$endDate, y = pe_ratio), stat = "identity", fill = "#33658A", width = as.numeric(days(100))) +
-  xlab("date") + ylab("PE ratio")
+pe_ratio <- price$open / mean(fin_web$dilutedEps, na.rm = TRUE)
 ```
 
 This gives us a mean PE ratio of __`r round(mean(pe_ratio), 2)`__.
+
+```{r message=FALSE, warning=FALSE}
+ggplot() +
+  geom_bar(aes(x = fin$endDate, y = fin_web$dilutedEps), stat = "identity", fill = "#33658A", width = as.numeric(days(100))) +
+  xlab("date") + ylab("Earnings per share")
+```
 
 ## Return on invested capital > 9%
 
@@ -152,14 +154,16 @@ This gives us an annual growth rate of __`r round(coef(mod)[["fin$endDate"]] / m
 ## Price to free cash flow < 20
 
 ```{r message=FALSE, warning=FALSE}
-pfcf <- price$open / (fin$freeCashflow / fin_web$dilutedAverageShares)
-
-ggplot() +
-  geom_bar(aes(x = fin$endDate, y = pfcf), stat = "identity", fill = "#33658A", width = as.numeric(days(100))) +
-  xlab("date") + ylab("price to free cash flow")
+pfcf <- price$open / mean(fin$freeCashflow / fin_web$dilutedAverageShares, na.rm = TRUE)
 ```
 
-This gives us a mean price to free cash flow of __`r round(mean(pfcf), 2)`__.
+This gives us a price to free cash flow of __`r round(mean(pfcf), 2)`__.
+
+```{r message=FALSE, warning=FALSE}
+ggplot() +
+  geom_bar(aes(x = fin$endDate, y = fin$freeCashflow / fin_web$dilutedAverageShares), stat = "identity", fill = "#33658A", width = as.numeric(days(100))) +
+  xlab("date") + ylab("Free cash flow per share")
+```
 
 ## Bringing it all together
 
