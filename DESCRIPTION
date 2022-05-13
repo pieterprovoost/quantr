@@ -1,6 +1,6 @@
 Package: quantr
 Title: Fetch financials and stock market data.
-Version: 0.4.3
+Version: 0.4.4
 Date: 2022-05-13
 Authors@R: 
     person(given = "Pieter",

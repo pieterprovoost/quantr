@@ -43,6 +43,10 @@ yahoo_financials_simple <- function(symbol, reporting, verbose = FALSE) {
     message(url)
   }
   res <- fromJSON(url)$quoteSummary$result
+  if (max(sapply(res, function(x) { length(x[[1]][[1]]) })) == 0) {
+    warning(glue::glue("quoteSummary did not return any results for {symbol}"))
+    return(NULL)
+  }
   flat <- lapply(res, function(x) {
     x[[1]][[1]] %>% select(-maxAge)
   })
