@@ -4,7 +4,7 @@
 \alias{yahoo_price_for_date}
 \title{Get price for a specific date}
 \usage{
-yahoo_price_for_date(symbol, date)
+yahoo_price_for_date(symbol, date, verbose = FALSE)
 }
 \arguments{
 \item{symbol}{symbol}

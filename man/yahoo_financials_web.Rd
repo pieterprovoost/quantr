@@ -4,7 +4,7 @@
 \alias{yahoo_financials_web}
 \title{Get Yahoo Finance financials from web page}
 \usage{
-yahoo_financials_web(symbol)
+yahoo_financials_web(symbol, verbose = FALSE)
 }
 \arguments{
 \item{symbol}{ticker symbol}

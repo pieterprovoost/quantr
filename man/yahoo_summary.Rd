@@ -7,7 +7,8 @@
 yahoo_summary(
   symbols,
   modules = c("defaultKeyStatistics", "financialData", "price", "quoteType",
-    "summaryDetail")
+    "summaryDetail"),
+  verbose = FALSE
 )
 }
 \arguments{

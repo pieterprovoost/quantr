@@ -4,7 +4,7 @@
 \alias{yahoo_search}
 \title{Search Yahoo Finance for tickers}
 \usage{
-yahoo_search(q)
+yahoo_search(q, verbose = FALSE)
 }
 \arguments{
 \item{q}{search query (for example, ISIN, ticker symbol)}

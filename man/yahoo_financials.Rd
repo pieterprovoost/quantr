@@ -4,7 +4,7 @@
 \alias{yahoo_financials}
 \title{Get Yahoo Finance financials (income statement, balance sheet, cash flow)}
 \usage{
-yahoo_financials(symbols, reporting = "annual")
+yahoo_financials(symbols, reporting = "annual", verbose = FALSE)
 }
 \arguments{
 \item{symbols}{ticker symbols}

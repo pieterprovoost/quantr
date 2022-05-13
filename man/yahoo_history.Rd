@@ -4,7 +4,13 @@
 \alias{yahoo_history}
 \title{Get historical prices from Yahoo Finance}
 \usage{
-yahoo_history(symbol, interval = "1d", days = 30, end_date = Sys.time())
+yahoo_history(
+  symbol,
+  interval = "1d",
+  days = 30,
+  end_date = Sys.time(),
+  verbose = FALSE
+)
 }
 \arguments{
 \item{interval}{interval ("1d", "1wk", or "1mo")}

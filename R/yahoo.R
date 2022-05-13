@@ -1,6 +1,9 @@
-yahoo_summary_simple <- function(symbol, modules) {
+yahoo_summary_simple <- function(symbol, modules, verbose = FALSE) {
   modules <- paste0(modules, collapse = ",")
   url <- glue::glue("https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}?modules={modules}")
+  if (verbose) {
+    message(url)
+  }
   res <- fromJSON(url)$quoteSummary$result
   flat <- purrr::flatten(res)
   flat <- lapply(flat, function(e) {
@@ -24,18 +27,21 @@ yahoo_summary_simple <- function(symbol, modules) {
 #' @export
 #' @examples
 #' yahoo_summary(c("AAPL", "MSFT"))
-yahoo_summary <- function(symbols, modules = c("defaultKeyStatistics", "financialData", "price", "quoteType", "summaryDetail")) {
-  rows <- purrr::map(.x = symbols, .f = ~yahoo_summary_simple(.x, modules))
+yahoo_summary <- function(symbols, modules = c("defaultKeyStatistics", "financialData", "price", "quoteType", "summaryDetail"), verbose = FALSE) {
+  rows <- purrr::map(.x = symbols, .f = ~yahoo_summary_simple(.x, modules, verbose))
   return(bind_rows(rows))
 }
 
-yahoo_financials_simple <- function(symbol, reporting) {
+yahoo_financials_simple <- function(symbol, reporting, verbose = FALSE) {
   modules <- ifelse(
     reporting == "annual",
     "incomeStatementHistory,balanceSheetHistory,cashflowStatementHistory",
     "incomeStatementHistoryQuarterly,balanceSheetHistoryQuarterly,cashflowStatementHistoryQuarterly"
   )
   url <- glue::glue("https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}?modules={modules}")
+  if (verbose) {
+    message(url)
+  }
   res <- fromJSON(url)$quoteSummary$result
   flat <- lapply(res, function(x) {
     x[[1]][[1]] %>% select(-maxAge)
@@ -45,8 +51,13 @@ yahoo_financials_simple <- function(symbol, reporting) {
     select(-contains(".fmt"), -contains(".longFmt")) %>%
     mutate(endDate.raw = as.POSIXct(endDate.raw, origin = "1970-01-01"))
   colnames(df) <- gsub(".raw", "", colnames(df))
-  df <- df %>%
-    mutate(freeCashflow = totalCashFromOperatingActivities + capitalExpenditures)
+  if ("capitalExpenditures" %in% names(df)) {
+    df <- df %>%
+      mutate(freeCashflow = totalCashFromOperatingActivities + capitalExpenditures)
+  } else {
+    df <- df %>%
+      mutate(freeCashflow = totalCashFromOperatingActivities)
+  }
   df$symbol <- symbol
   return(as_tibble(df))
 }
@@ -59,8 +70,8 @@ yahoo_financials_simple <- function(symbol, reporting) {
 #' @export
 #' @examples
 #' yahoo_financials(c("AAPL", "MSFT"), "quarterly")
-yahoo_financials <- function(symbols, reporting = "annual") {
-  rows <- purrr::map(.x = symbols, .f = ~yahoo_financials_simple(.x, reporting))
+yahoo_financials <- function(symbols, reporting = "annual", verbose = FALSE) {
+  rows <- purrr::map(.x = symbols, .f = ~yahoo_financials_simple(.x, reporting, verbose))
   return(bind_rows(rows))
 }
 
@@ -71,10 +82,13 @@ yahoo_financials <- function(symbols, reporting = "annual") {
 #' @param end_date end date (default = Sys.time())
 #' @return tibble
 #' @export
-yahoo_history <- function(symbol, interval = "1d", days = 30, end_date = Sys.time()) {
+yahoo_history <- function(symbol, interval = "1d", days = 30, end_date = Sys.time(), verbose = FALSE) {
   period1 <- as.integer(end_date - as.difftime(days, unit = "days"))
   period2 <- as.integer(end_date)
   url <- glue::glue("https://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1={period1}&period2={period2}&interval={interval}&events=history")
+  if (verbose) {
+    message(url)
+  }
   tryCatch({
     suppressWarnings({
       csv <- read.csv(url)
@@ -97,8 +111,8 @@ yahoo_history <- function(symbol, interval = "1d", days = 30, end_date = Sys.tim
 #' @param symbol symbol
 #' @param date date
 #' @export
-yahoo_price_for_date <- function(symbol, date) {
-  prices <- yahoo_history(symbol, interval = "1d", days = 5, end_date = date)
+yahoo_price_for_date <- function(symbol, date, verbose = FALSE) {
+  prices <- yahoo_history(symbol, interval = "1d", days = 5, end_date = date, verbose)
   return(tail(prices, 1))
 }
 
@@ -107,8 +121,11 @@ yahoo_price_for_date <- function(symbol, date) {
 #' @param q search query (for example, ISIN, ticker symbol)
 #' @return tibble
 #' @export
-yahoo_search <- function(q) {
+yahoo_search <- function(q, verbose = FALSE) {
   url <- glue::glue("https://query2.finance.yahoo.com/v1/finance/search?q={q}&newsCount=0")
+  if (verbose) {
+    message(url)
+  }
   fromJSON(url)$quotes %>%
     as_tibble()
 }
@@ -140,8 +157,12 @@ extract_fin_row <- function(html, metric) {
 #' @param symbol ticker symbol
 #' @return tibble
 #' @export
-yahoo_financials_web <- function(symbol) {
-  html <- read_html(glue::glue("https://finance.yahoo.com/quote/{symbol}/financials"))
+yahoo_financials_web <- function(symbol, verbose = FALSE) {
+  url <- glue::glue("https://finance.yahoo.com/quote/{symbol}/financials")
+  if (verbose) {
+    message(url)
+  }
+  html <- read_html(url)
   headers <- html %>% html_element(xpath = "//*[text() = 'ttm']/../..") %>% html_children() %>% html_text()
   stopifnot(headers[1] == "Breakdown")
   thousands <- html %>% html_element(xpath = "//*[text() = 'All numbers in thousands']") %>% class() == "xml_node"
