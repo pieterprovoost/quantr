@@ -1,3 +1,9 @@
+get_json <- function(url) {
+  res <- httr::GET(url, httr::user_agent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"))
+  text <- httr::content(res, "text", encoding = "UTF-8")
+  return(fromJSON(text))
+}
+
 #' Get Nasdaq tickers
 #'
 #' This gets all Nasdaq ticker symbols from the Nasdaq website.
@@ -9,7 +15,7 @@
 #' nasdaq_tickers()
 nasdaq_tickers <- function(exchange = "nasdaq") {
   url <- glue::glue("https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=25&exchange={exchange}&download=true")
-  res <- fromJSON(url)$data$rows
+  res <- get_json(url)$data$rows
   result <- res %>%
     select(
       symbol,

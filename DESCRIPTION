@@ -1,7 +1,7 @@
 Package: quantr
 Title: Fetch financials and stock market data.
-Version: 0.4.4
-Date: 2022-05-13
+Version: 0.5.0
+Date: 2023-01-01
 Authors@R: 
     person(given = "Pieter",
            family = "Provoost",
@@ -12,7 +12,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Imports:
   dplyr,
   httr,
